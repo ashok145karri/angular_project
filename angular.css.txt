@@ -1,0 +1,16 @@
+.table-container {
+  width: 100%;
+}
+
+.table-container table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 10px; /* Adjust this value to control the space between cells */
+}
+
+.table-container th,
+.table-container td {
+  padding: 10px; /* Adjust this value to control cell padding */
+  border: 1px solid #ccc;
+  text-align: left;
+}

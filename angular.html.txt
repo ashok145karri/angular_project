@@ -1,0 +1,28 @@
+<div class="col-md-8 form-group">        
+    <input type="file" class="form-control" (change)="addfile($event)" placeholder="Upload file">        
+  </div>  
+
+
+  <!-- <a (click)="convert()">Generate PDF</a> -->
+
+  <div class="container mt-5" id="htmlData">
+  
+    <h2>Angular Display Data from Json File Example</h2>
+    
+    <table class="table table-striped table-container">
+      <thead>
+          <tr>
+            <th *ngFor="let property of keysList">{{ property }}</th>
+          </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of arrayList">
+          <td *ngFor="let u of user| keyvalue">{{ u.value }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="col-md-4 text-right">
+    <button class="btn btn-success btn-block" (click)="openPDF()">Download PDF</button>
+</div>

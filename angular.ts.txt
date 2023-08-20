@@ -1,0 +1,63 @@
+import { Component,ViewChild,ElementRef } from '@angular/core';
+import * as XLSX from 'xlsx';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+
+@Component({
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.css']
+})
+export class HomeComponent {
+title = 'XlsRead';
+  file!: File;
+arrayBuffer:any;
+filelist:any;
+arrayList:any;
+keysList:any;
+
+@ViewChild('htmlData') htmlData!: ElementRef;
+  addfile(event:any)     
+  {    
+  this.file= event.target.files[0];     
+  let fileReader = new FileReader();    
+  fileReader.readAsArrayBuffer(this.file);     
+  fileReader.onload = (e) => {    
+      this.arrayBuffer = fileReader.result;    
+      var data = new Uint8Array(this.arrayBuffer);    
+      var arr = new Array();    
+      for(var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);    
+      var bstr = arr.join("");  
+      console.log(bstr);  
+      var workbook = XLSX.read(bstr, {type:"binary"});    
+      var first_sheet_name = workbook.SheetNames[0];    
+      var worksheet = workbook.Sheets[first_sheet_name];    
+      //console.log(XLSX.utils.sheet_to_json(worksheet,{raw:true}));    
+        this.arrayList = XLSX.utils.sheet_to_json(worksheet,{raw:true});   
+        this.keysList =Object.keys(this.arrayList[0]);  
+            this.filelist = [];    
+            // console.log(this.filelist)    
+            // console.log(typeof(this.arrayList));
+            // console.log(this.arrayList);
+            // console.log(this.keysList);
+    
+  }    
+}
+
+
+public openPDF(): void {
+  let DATA: any = document.getElementById('htmlData');
+  html2canvas(DATA).then((canvas) => {
+    let fileWidth = 208;
+    let fileHeight = (canvas.height * fileWidth) / canvas.width;
+    const FILEURI = canvas.toDataURL('image/png');
+    let PDF = new jsPDF('p', 'mm', 'a4');
+    let position = 0;
+    PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);
+    PDF.save('angular-demo.pdf');
+  });
+}
+
+}
+
+
